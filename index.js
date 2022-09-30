@@ -2,7 +2,7 @@ const todoLists = require('./todolists-router');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-// mongoose.connect('mongodb://localhost:27017');
+mongoose.connect('mongodb://localhost:27017/serverfortodo');
 const express = require('express');
 const app = express();
 const port = 3010;
