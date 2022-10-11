@@ -1,4 +1,6 @@
 const todoLists = require('./todolists-router');
+const tasks = require('./tasks-router');
+const user = require('./users/users-router');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -11,6 +13,8 @@ app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use('/todolists', todoLists);
+app.use('/todolist', tasks);
+app.use('/users', user);
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
