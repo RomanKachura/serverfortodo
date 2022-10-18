@@ -1,14 +1,10 @@
-const mongoose = require("mongoose");
-
-const UsersSchema = mongoose.Schema({
-    todolists: String
-});
-const Users = mongoose.model('users', UsersSchema);
-let user = null;
-
-//Function for work with Users
+const {Users} = require("../schemas/schemas");
 const getUser = (id) => {
-    return Users.find({_id: id});
+    return Users.findById(id).then(res => ({id: res._id, todolists: res.todolists}));
 }
 
+
+
 exports.getUser = getUser;
+
+

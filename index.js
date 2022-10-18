@@ -1,5 +1,5 @@
-const todoLists = require('./todolists-router');
-const tasks = require('./tasks-router');
+const todoLists = require('./todolists/todolists-router');
+const tasks = require('./tasks/tasks-router');
 const user = require('./users/users-router');
 const cors = require('cors');
 const bodyParser = require('body-parser');
