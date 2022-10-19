@@ -1,32 +1,35 @@
-const mongoose = require("mongoose");
+const {mongoose, Schema, model} = require("mongoose");
 
-const UsersSchema = mongoose.Schema({
-    todolists: Object
+const UsersSchema = Schema({
+    userName: {type: String, require: true},
+    email: {type: String, unique: true, require: true},
+    password: {type: String, require: true},
+    todolists: mongoose.ObjectId
 });
-const TaskSchema = mongoose.Schema({
+const TaskSchema = Schema({
     title: String,
     isDone: Boolean
 });
-const TodoListSchema = mongoose.Schema({
+const TodoListSchema = Schema({
     title: String,
     tasks: [TaskSchema]
 });
 
-const TodoListsForUserSchema = mongoose.Schema({
+const TodoListsForUserSchema = Schema({
     todolists: [TodoListSchema]
 });
 
-const Users = mongoose.model('users', UsersSchema);
-const TodoListsForUser = mongoose.model('newtodolists', TodoListsForUserSchema);
-const Todolist = mongoose.model('todolist', TodoListSchema);
-const Task = mongoose.model('task', TaskSchema);
+const User = model('users', UsersSchema);
+const TodoListsForUser = model('newtodolists', TodoListsForUserSchema);
+const Todolist = model('todolist', TodoListSchema);
+const Task = model('task', TaskSchema);
 
 exports.UsersSchema = UsersSchema;
 exports.TaskSchema = TaskSchema;
 exports.TodoListSchema = TodoListSchema;
 exports.TodoListsForUserSchema = TodoListsForUserSchema;
 
-exports.Users = Users;
+exports.User = User;
 exports.TodoListsForUser = TodoListsForUser;
 exports.Todolist = Todolist;
 exports.Task = Task;

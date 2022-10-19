@@ -1,6 +1,6 @@
 const express = require('express');
-const {getTodoForUser, addTodoForUser, deleteTodoForUser, updateTitleTodoForuser, updateTitleTodoForUser} = require("./todolists-repository");
 const router = express.Router();
+const {getTodoForUser, addTodoForUser, deleteTodoForUser, updateTitleTodoForuser, updateTitleTodoForUser} = require("./todolists-repository");
 
 router.use((req, res, next) => {
     next();
