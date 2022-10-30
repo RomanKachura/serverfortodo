@@ -4,8 +4,16 @@ const UsersSchema = Schema({
     userName: {type: String, require: true},
     email: {type: String, unique: true, require: true},
     password: {type: String, require: true},
-    todolists: mongoose.ObjectId
+    isActivated: {type: Boolean, default: false},
+    activationLink: {type: String, required: true},
+    todolists: {type: Schema.Types.ObjectId}
 });
+
+const TokenSchema = Schema({
+    user: {type: Schema.Types.ObjectId, ref: 'User'},
+    refreshToken: {type: String, require: true}
+});
+
 const TaskSchema = Schema({
     title: String,
     isDone: Boolean
@@ -20,11 +28,13 @@ const TodoListsForUserSchema = Schema({
 });
 
 const User = model('users', UsersSchema);
+const Token = model('token', TokenSchema);
 const TodoListsForUser = model('newtodolists', TodoListsForUserSchema);
 const Todolist = model('todolist', TodoListSchema);
 const Task = model('task', TaskSchema);
 
 exports.UsersSchema = UsersSchema;
+exports.Token = Token;
 exports.TaskSchema = TaskSchema;
 exports.TodoListSchema = TodoListSchema;
 exports.TodoListsForUserSchema = TodoListsForUserSchema;
