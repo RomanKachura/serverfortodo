@@ -30,8 +30,6 @@ const TodoListsForUserSchema = Schema({
 const User = model('users', UsersSchema);
 const Token = model('token', TokenSchema);
 const TodoListsForUser = model('newtodolists', TodoListsForUserSchema);
-const Todolist = model('todolist', TodoListSchema);
-const Task = model('task', TaskSchema);
 
 exports.UsersSchema = UsersSchema;
 exports.Token = Token;
@@ -41,5 +39,3 @@ exports.TodoListsForUserSchema = TodoListsForUserSchema;
 
 exports.User = User;
 exports.TodoListsForUser = TodoListsForUser;
-exports.Todolist = Todolist;
-exports.Task = Task;

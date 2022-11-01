@@ -31,9 +31,47 @@ class UserService {
             await tl.save();
             return {...tokens, user: userDto};
         } catch (e) {
-            console.error(e);
-            throw e;
+            throw ApiErrors.BadRequest('Any error', e);
         }
+    }
+
+    async login(email, password) {
+        const user = await User.findOne({email});
+        if (!user) {
+            throw ApiErrors.BadRequest(`User with email ${email} is not found!`);
+        }
+        const validPassword = await bcrypt.compareSync(password, user.password);
+
+        if (!validPassword) {
+            throw ApiErrors.BadRequest(`Email or password is not correct!`);
+        }
+        const userDto = await new UserDto(user);
+        const tokens = await tokenService.generateToken({...userDto});
+        await tokenService.saveToken(userDto.id, tokens.refreshToken);
+        return {...tokens, user: userDto};
+    }
+
+    async logout(refreshToken) {
+        const token = await tokenService.removeToken(refreshToken);
+        return token;
+    }
+
+    async refresh(refreshToken) {
+        if (!refreshToken) {
+            throw ApiErrors.UnauthorizedError();
+        }
+
+        const userData = await tokenService.validateRefreshToken(refreshToken);
+        const tokenFromDb = await tokenService.findToken(refreshToken);
+        if (!userData || !tokenFromDb) {
+            throw ApiErrors.UnauthorizedError();
+        }
+
+        const user = User.findById(userData.id);
+        const userDto = await new UserDto(user);
+        const tokens = await tokenService.generateToken({...userDto});
+        await tokenService.saveToken(userDto.id, tokens.refreshToken);
+        return {...tokens, user: userDto};
     }
 
     async activate(activationLink) {
@@ -44,6 +82,17 @@ class UserService {
 
         user.isActivated = true;
         await user.save();
+    }
+
+    async getAll() {
+        const users = await User.find();
+        return users;
+    }
+
+    async getUser(refreshToken) {
+        const user = await User.findOne({refreshToken});
+        const userDto = await new UserDto(user);
+        return {...userDto};
     }
 }
 

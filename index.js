@@ -3,7 +3,7 @@ const errorMiddlewares = require('./middlewares/error-middlewares');
 const todoLists = require('./todolists/todolists-router');
 const tasks = require('./tasks/tasks-router');
 const user = require('./users/users-router');
-const auth = require('./auth/auth-router');
+const apiRouter = require('./api/api-router');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 app.use('/todolists', todoLists);
 app.use('/todolist', tasks);
 app.use('/users', user);
-app.use('/auth', auth);
+app.use('/api', apiRouter);
 app.use(errorMiddlewares);
 
 app.get('/', (req, res) => {
