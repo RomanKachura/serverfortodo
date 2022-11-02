@@ -8,10 +8,11 @@ class TasksService {
         return tasks;
     }
 
-    async addTask(refreshToken, tid, title) {
+    async addTask(refreshToken, tid, title, describe) {
         const tasks = await this.getTasks(refreshToken, tid);
         const id = new mongoose.Types.ObjectId();
-        const task = {id, title, isDone: false};
+        const createAt = new Date();
+        const task = {id, title, isDone: false, createAt, describe};
         const newTasks = [task, ...tasks];
         const update = await this.updateTasks(refreshToken, tid, newTasks);
         return update;

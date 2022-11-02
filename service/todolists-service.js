@@ -20,7 +20,8 @@ class TodolistsService {
     async addTodoList(refreshToken, title) {
         const todolists = await this.getTodoLists(refreshToken);
         const id = new mongoose.Types.ObjectId();
-        const tl = {id, title, tasks: []};
+        const createAt = new Date();
+        const tl = {id, title, tasks: [], createAt};
         const newTodoLists = [tl, ...todolists];
         return await this.updateTodoLists(refreshToken, newTodoLists);
     }

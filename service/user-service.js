@@ -45,6 +45,11 @@ class UserService {
         if (!validPassword) {
             throw ApiErrors.BadRequest(`Email or password is not correct!`);
         }
+
+        if (!user.isActivated) {
+            throw ApiErrors.BadRequest(`You need to activate your account!`);
+        }
+
         const userDto = await new UserDto(user);
         const tokens = await tokenService.generateToken({...userDto});
         await tokenService.saveToken(userDto.id, tokens.refreshToken);

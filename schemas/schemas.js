@@ -16,10 +16,13 @@ const TokenSchema = Schema({
 
 const TaskSchema = Schema({
     title: String,
-    isDone: Boolean
+    describe: String,
+    isDone: Boolean,
+    createAt:Date
 });
 const TodoListSchema = Schema({
     title: String,
+    createAt:Date,
     tasks: [TaskSchema]
 });
 

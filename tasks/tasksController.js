@@ -16,7 +16,8 @@ class TasksController {
         try {
             const tid = req.params.tid;
             const title = req.body.title;
-            const tasks = await tasksService.addTask(getRefreshToken(req), tid, title);
+            const describe = req.body.describe;
+            const tasks = await tasksService.addTask(getRefreshToken(req), tid, title, describe);
             return res.json(tasks);
         } catch (e) {
             next(e);
