@@ -13,7 +13,10 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3010;
 
-app.use(cors());
+app.use(cors({
+    credentials: true,
+    origin: process.env.CLIENT_URL
+}));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());

@@ -4,7 +4,7 @@ const getRefreshToken = require('../exeption/getRefreshToken');
 class todolistsController {
     async getTodoLists(req, res, next) {
         try {
-            const tl = await todolistsService.getTodoLists(getRefreshToken(req));
+            const tl = await todolistsService.getTodoLists(req.params.todolists);
             res.json(tl);
         } catch (e) {
             next(e);
@@ -14,7 +14,9 @@ class todolistsController {
     async addTodoList(req, res, next) {
         try {
             const title = req.body.title;
-            const tl = await todolistsService.addTodoList(getRefreshToken(req), title);
+            const todolists = req.params.todolists;
+            console.log(`addTodoList ${todolists}`)
+            const tl = await todolistsService.addTodoList(todolists, title);
             res.json(tl);
         } catch (e) {
             next(e);
@@ -24,7 +26,8 @@ class todolistsController {
     async removeTodoList(req, res, next) {
         try {
             const id = req.params.id;
-            const tl = await todolistsService.removeTodoList(getRefreshToken(req), id);
+            const todolists = req.params.todolists;
+            const tl = await todolistsService.removeTodoList(todolists, id);
             res.json(tl);
         } catch (e) {
             next(e);
@@ -34,8 +37,9 @@ class todolistsController {
     async updateTitleTodoList(req, res, next) {
         try {
             const id = req.params.id;
+            const todolists = req.params.todolists;
             const title = req.body.title;
-            const tl = await todolistsService.updateTitleTodoList(getRefreshToken(req), id, title);
+            const tl = await todolistsService.updateTitleTodoList(todolists, id, title);
             res.json(tl);
         } catch (e) {
             next(e);

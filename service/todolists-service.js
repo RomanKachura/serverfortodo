@@ -3,45 +3,42 @@ const {TodoListsForUser} = require('../schemas/schemas');
 const {mongoose} = require("mongoose");
 
 class TodolistsService {
-    async getTodoLists(refreshToken) {
-        const user = await userService.getUser(refreshToken);
-        const tid = user.todolists.toString();
-        const todolists = await TodoListsForUser.findById(tid);
-        const tl = todolists.todolists;
+    async getTodoLists(todolists) {
+        const tl = await TodoListsForUser.findById(todolists);
+        return tl.todolists;
+    }
+
+    async getOneTodoList(todolists, id) {
+        const tls = await this.getTodoLists(todolists);
+        const tl = tls.find(t => t._id == id);
         return tl;
     }
 
-    async getOneTodoList(refreshToken, id) {
-        const todolists = await this.getTodoLists(refreshToken);
-        const tl = todolists.find(t => t._id == id);
-        return tl;
-    }
-
-    async addTodoList(refreshToken, title) {
-        const todolists = await this.getTodoLists(refreshToken);
+    async addTodoList(todolists, title) {
+        const tls = await this.getTodoLists(todolists);
         const id = new mongoose.Types.ObjectId();
         const createAt = new Date();
         const tl = {id, title, tasks: [], createAt};
-        const newTodoLists = [tl, ...todolists];
-        return await this.updateTodoLists(refreshToken, newTodoLists);
+        const newTodoLists = [tl, ...tls];
+        await this.updateTodoLists(todolists, newTodoLists);
+        return await this.getTodoLists(todolists);
     }
 
-    async removeTodoList(refreshToken, id) {
-        const todolists = await this.getTodoLists(refreshToken);
-        const newTodoLists = todolists.filter(t => t._id != id);
-        console.log(newTodoLists)
-        return await this.updateTodoLists(refreshToken, newTodoLists);
+    async removeTodoList(todolists, id) {
+        const tl = await this.getTodoLists(todolists);
+        const newTodoLists = tl.filter(t => t._id != id);
+        await this.updateTodoLists(todolists, newTodoLists);
+        return await this.getTodoLists(todolists);
     }
 
-    async updateTitleTodoList(refreshToken, id, title) {
-        const todolists = await this.getTodoLists(refreshToken);
-        const newTodoLists = todolists.map(t => ({_id: t._id, tasks: t.tasks, title: t._id == id ? title : t.title}));
-        return await this.updateTodoLists(refreshToken, newTodoLists);
+    async updateTitleTodoList(todolists, id, title) {
+        const tl = await this.getTodoLists(todolists);
+        const newTodoLists = tl.map(t => ({_id: t._id, tasks: t.tasks, title: t._id == id ? title : t.title}));
+        await this.updateTodoLists(todolists, newTodoLists);
+        return await this.getTodoLists(todolists);
     }
 
-    async updateTodoLists(refreshToken, todolists) {
-        const user = await userService.getUser(refreshToken);
-        const tid = user.todolists.toString();
+    async updateTodoLists(tid, todolists) {
         const update = await TodoListsForUser.updateOne({_id: tid}, {todolists});
         return update;
     }

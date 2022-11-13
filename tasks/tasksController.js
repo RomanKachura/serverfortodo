@@ -15,9 +15,10 @@ class TasksController {
     async addTask(req, res, next) {
         try {
             const tid = req.params.tid;
+            const todolists = req.params.todolists;
             const title = req.body.title;
-            const describe = req.body.describe;
-            const tasks = await tasksService.addTask(getRefreshToken(req), tid, title, describe);
+            const describe = '';
+            const tasks = await tasksService.addTask(todolists, tid, title, describe);
             return res.json(tasks);
         } catch (e) {
             next(e);
@@ -27,9 +28,10 @@ class TasksController {
     async removeTask(req, res, next) {
         try {
             const tid = req.params.tid;
+            const todolists = req.params.todolists;
             const id = req.params.id;
-            const tasks = await tasksService.removeTask(getRefreshToken(req), tid, id);
-            return res.json(tasks);
+            const resolve = await tasksService.removeTask(todolists, tid, id);
+            return res.json(resolve);
         } catch (e) {
             next(e);
         }
@@ -38,10 +40,11 @@ class TasksController {
     async updateTask(req, res, next) {
         try {
             const tid = req.params.tid;
+            const todolists = req.params.todolists;
             const id = req.params.id;
             const title = req.body.title;
             const isDone = req.body.isDone;
-            const tasks = await tasksService.updateOneTask(getRefreshToken(req), tid, {id, title, isDone});
+            const tasks = await tasksService.updateOneTask(todolists, tid, {id, title, isDone});
             return res.json(tasks);
         } catch (e) {
             next(e);

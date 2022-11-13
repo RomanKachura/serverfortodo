@@ -1,7 +1,6 @@
 const express = require('express');
 const {getUser, getTodoForUser} = require("./users-repository");
 const router = express.Router();
-// let user = null;
 let user = {
     todolists:'6349797bc488b6b87c1fab5f'
 };

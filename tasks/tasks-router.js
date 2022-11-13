@@ -8,8 +8,8 @@ router.use((req, res, next) => {
 });
 
 router.get('/:tid/tasks', authMiddleWares, tasksController.getTasks);
-router.post('/:tid', authMiddleWares, tasksController.addTask);
-router.put('/:tid/tasks/:id', authMiddleWares, tasksController.updateTask);
-router.delete('/:tid/tasks/:id', authMiddleWares, tasksController.removeTask);
+router.post('/:todolists/:tid', authMiddleWares, tasksController.addTask);
+router.put('/:todolists/:tid/tasks/:id', authMiddleWares, tasksController.updateTask);
+router.delete('/:todolists/:tid/tasks/:id', authMiddleWares, tasksController.removeTask);
 
 module.exports = router;

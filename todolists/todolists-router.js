@@ -7,9 +7,9 @@ router.use((req, res, next) => {
     next();
 });
 
-router.get('/', authMiddleWares, todolistsController.getTodoLists);
-router.post('/', authMiddleWares, todolistsController.addTodoList);
-router.delete('/:id', authMiddleWares, todolistsController.removeTodoList);
-router.put('/:id', authMiddleWares, todolistsController.updateTitleTodoList);
+router.get(`/:todolists`, authMiddleWares, todolistsController.getTodoLists);
+router.post('/:todolists', authMiddleWares, todolistsController.addTodoList);
+router.delete('/:todolists/:id', authMiddleWares, todolistsController.removeTodoList);
+router.put('/:todolists/:id', authMiddleWares, todolistsController.updateTitleTodoList);
 
 module.exports = router;
