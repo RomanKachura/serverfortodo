@@ -8,11 +8,11 @@ class TasksService {
         return tasks;
     }
 
-    async addTask(todolists, tid, title, describe) {
+    async addTask(todolists, tid, title) {
         const tasks = await this.getTasks(todolists, tid);
         const id = new mongoose.Types.ObjectId();
         const createAt = new Date();
-        const task = {id, title, isDone: false, createAt, describe};
+        const task = {id, title, isDone: false, createAt, describe: ''};
         const newTasks = [task, ...tasks];
         const update = await this.updateTasks(todolists, tid, newTasks);
         return update;
@@ -28,8 +28,8 @@ class TasksService {
     async updateOneTask(todolists, tid, task) {
         const tasks = await this.getTasks(todolists, tid);
         const newTasks = tasks.map(t => t._id == task.id
-            ? {_id: t._id, title: task.title, isDone: task.isDone}
-            : {_id: t._id, title: t.title, isDone: t.isDone}
+            ? {_id: t._id, createAt: t.createAt, title: task.title, describe: task.describe, isDone: task.isDone}
+            : {_id: t._id, createAt: t.createAt, title: t.title, describe: t.describe, isDone: t.isDone}
         );
         const update = await this.updateTasks(todolists, tid, newTasks);
         return update;

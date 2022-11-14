@@ -17,8 +17,7 @@ class TasksController {
             const tid = req.params.tid;
             const todolists = req.params.todolists;
             const title = req.body.title;
-            const describe = '';
-            const tasks = await tasksService.addTask(todolists, tid, title, describe);
+            const tasks = await tasksService.addTask(todolists, tid, title);
             return res.json(tasks);
         } catch (e) {
             next(e);
@@ -44,7 +43,8 @@ class TasksController {
             const id = req.params.id;
             const title = req.body.title;
             const isDone = req.body.isDone;
-            const tasks = await tasksService.updateOneTask(todolists, tid, {id, title, isDone});
+            const describe = req.body.describe;
+            const tasks = await tasksService.updateOneTask(todolists, tid, {id, title, describe, isDone});
             return res.json(tasks);
         } catch (e) {
             next(e);
